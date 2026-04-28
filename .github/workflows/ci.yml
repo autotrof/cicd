@@ -7,8 +7,26 @@ on:
     branches: [ main ]
 
 jobs:
+  run-with-pnpm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          node-version: '23.9.0'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        run: pnpm test
   run-with-bun:
-    runs-on: alpine-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -25,7 +43,7 @@ jobs:
       - name: Run tests
         run: bun test
   run-with-node:
-    runs-on: alpine-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -35,6 +53,7 @@ jobs:
         uses: actions/setup-node@v6.3.0
         with:
           node-version: '23.9.0'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
